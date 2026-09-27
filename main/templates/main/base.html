@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ profile.full_name|default:"Vishal Kumar" }} — {{ profile.role_title|default:"Portfolio" }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ profile.tagline|default:"Portfolio of a Python Full Stack Developer." }}{% endblock %}">
+    <meta name="theme-color" content="#081f38">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ profile.full_name|default:'Vishal Kumar' }} — {{ profile.role_title|default:'Portfolio' }}">
+    <meta property="og:description" content="{{ profile.tagline|default:'Portfolio of a Python Full Stack Developer.' }}">
+    {% if profile.profile_image %}<meta property="og:image" content="{{ profile.profile_image.url }}">{% endif %}
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon.png' %}?v=3">
+<link rel="icon" type="image/png" sizes="192x192" href="{% static 'images/favicon.png' %}?v=3">
+<link rel="apple-touch-icon" href="{% static 'images/favicon.png' %}?v=3">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+>
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<header class="site-header">
+    <nav class="pf-navbar" aria-label="Primary navigation">
+        <div class="pf-container nav-inner">
+            <a class="brand-lockup" href="{% url 'home' %}" aria-label="{{ profile.full_name|default:'Vishal Kumar' }} home">
+                <span class="brand-mark"><img
+        src="{% static 'images/logo.png' %}"
+        alt="{{ profile.full_name|default:'Vishal Kumar' }} logo"
+        class="site-logo"
+    >
+                </span>
+                <span class="brand-copy"><strong>{{ profile.full_name|default:"Vishal Kumar" }}</strong><small>Full-stack developer</small></span>
+            </a>
+
+            <button class="pf-nav-toggle" type="button" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <ul class="pf-nav-links" id="navLinks">
+                <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}"><i class="bi bi-house-door"></i> Home</a></li>
+                <li><a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}"><i class="bi bi-person"></i> About</a></li>
+                <li><a href="{% url 'skills' %}" class="{% if request.resolver_match.url_name == 'skills' %}active{% endif %}"><i class="bi bi-stars"></i> Skills</a></li>
+                <li><a href="{% url 'projects' %}" class="{% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_detail' %}active{% endif %}"><i class="bi bi-grid-1x2"></i> Projects</a></li>
+                <li><a href="{% url 'blog_list' %}" class="{% if request.resolver_match.url_name == 'blog_list' or request.resolver_match.url_name == 'blog_detail' %}active{% endif %}"><i class="bi bi-journal-text"></i> Blog</a></li>
+                <li><a href="{% url 'contact' %}" class="nav-contact {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Let's Talk <i class="bi bi-arrow-up-right"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<main id="main-content">{% block content %}{% endblock %}</main>
+
+<footer class="pf-footer">
+    <div class="pf-container">
+        <div class="footer-top">
+            <div class="footer-brand-block">
+                <a class="brand-lockup brand-lockup--footer" href="{% url 'home' %}">
+                    <span class="brand-mark"><img
+        src="{% static 'images/logo.png' %}"
+        alt="{{ profile.full_name|default:'Vishal Kumar' }} logo"
+        class="site-logo site-logo--footer"
+    ></span>
+                    <span class="brand-copy"><strong>{{ profile.full_name|default:"Vishal Kumar" }}</strong><small>{{ profile.role_title|default:"Full-stack developer" }}</small></span>
+                </a>
+                <p>{{ profile.tagline|default:"Building useful, reliable and modern web experiences with Python and Django." }}</p>
+                <div class="pf-social-row">
+                    {% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" rel="noopener" aria-label="GitHub"><i class="bi bi-github"></i></a>{% endif %}
+                    {% if profile.linkedin_url %}<a href="{{ profile.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>{% endif %}
+                    {% if profile.instagram_url %}<a href="{{ profile.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>{% endif %}
+                    {% if profile.twitter_url %}<a href="{{ profile.twitter_url }}" target="_blank" rel="noopener" aria-label="X"><i class="bi bi-twitter-x"></i></a>{% endif %}
+                </div>
+            </div>
+            <div>
+                <span class="footer-label">Explore</span>
+                <ul class="footer-links">
+                    <li><a href="{% url 'about' %}">About me</a></li>
+                    <li><a href="{% url 'skills' %}">Skills & stack</a></li>
+                    <li><a href="{% url 'projects' %}">Projects</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="footer-label">Contact</span>
+                <ul class="footer-links footer-contact-links">
+                    {% if profile.email %}<li><a href="mailto:{{ profile.email }}"><i class="bi bi-envelope"></i>{{ profile.email }}</a></li>{% endif %}
+                    {% if profile.phone %}<li><a href="tel:{{ profile.phone }}"><i class="bi bi-telephone"></i>{{ profile.phone }}</a></li>{% endif %}
+                    {% if profile.location %}<li><span><i class="bi bi-geo-alt"></i>{{ profile.location }}</span></li>{% endif %}
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; {% now "Y" %} {{ profile.full_name|default:"Vishal Kumar" }}. All rights reserved.</span>
+            <span>Designed & built with <strong>Python + Django</strong>.</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+            const open = navLinks.classList.toggle('is-open');
+            navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            navToggle.innerHTML = open ? '<i class="bi bi-x-lg"></i>' : '<i class="bi bi-list"></i>';
+        });
+        navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+            navLinks.classList.remove('is-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.innerHTML = '<i class="bi bi-list"></i>';
+        }));
+    }
+window.addEventListener('scroll', () => {
+        document.body.classList.toggle('nav-scrolled', window.scrollY > 8);
+    }, {passive:true});
+</script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

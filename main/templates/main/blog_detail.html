@@ -1,0 +1,6 @@
+{% extends "main/base.html" %}
+{% block title %}{{ post.title }} — {{ profile.full_name }}{% endblock %}
+{% block content %}
+<section class="inner-hero"><div class="pf-container"><a href="{% url 'blog_list' %}" class="back-link"><i class="bi bi-arrow-left"></i> Back to blog</a><span class="section-label section-label--light mt-4 d-block">{{ post.published_at|date:"d F Y" }}</span><h1>{{ post.title }}</h1><p>{{ post.excerpt }}</p></div></section>
+<section class="pf-section"><div class="pf-container blog-detail-grid"><article>{% if post.cover_image %}<img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="detail-image">{% endif %}<div class="detail-content"><div class="pf-prose">{{ post.content|linebreaks }}</div></div></article>{% if recent_posts %}<aside class="recent-posts"><span class="section-label">More from the blog</span>{% for p in recent_posts %}<a href="{% url 'blog_detail' p.slug %}" class="recent-post"><span>{{ p.published_at|date:"d M Y" }}</span><strong>{{ p.title }}</strong><i class="bi bi-arrow-up-right"></i></a>{% endfor %}</aside>{% endif %}</div></section>
+{% endblock %}

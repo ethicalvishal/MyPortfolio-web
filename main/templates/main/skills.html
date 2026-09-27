@@ -1,0 +1,59 @@
+{% extends "main/base.html" %}
+{% block title %}Skills — {{ profile.full_name }}{% endblock %}
+{% block content %}
+<section class="inner-hero inner-hero--compact"><div class="pf-container"><span class="section-label section-label--light">My toolkit</span><h1>Skills that <span>power my work.</span></h1><p>A visual overview of the technologies I use, with proficiency levels managed directly from the Admin dashboard.</p></div></section>
+
+<section class="pf-section pf-section--soft skills-page-section"><div class="pf-container">
+    {% if grouped_skills %}
+    <div class="skills-summary">
+        <div><span class="skills-summary-value">{{ grouped_skills|length }}</span><span>Skill groups</span></div>
+        <div><span class="skills-summary-value">{{ profile.projects_completed|default:"0" }}+</span><span>Projects built</span></div>
+        <div><span class="skills-summary-value">{{ profile.years_experience|default:"0" }}+</span><span>Years learning & building</span></div>
+        <div><span class="skills-summary-value">{{ grouped_skills|length }}+</span><span>Technology areas</span></div>
+    </div>
+    <div class="skill-category-grid">
+        {% for item in grouped_skills %}
+        <section class="skill-category-card skill-category-card--enhanced">
+            <div class="skill-category-head"><div class="category-icon">{% if item.code == 'backend' %}<i class="bi bi-server"></i>{% elif item.code == 'frontend' %}<i class="bi bi-layout-text-window-reverse"></i>{% elif item.code == 'database' %}<i class="bi bi-database"></i>{% elif item.code == 'tools' %}<i class="bi bi-tools"></i>{% else %}<i class="bi bi-grid-3x3-gap"></i>{% endif %}</div><div><span class="section-label">Stack</span><h2>{{ item.label }}</h2></div></div>
+            <div class="skill-list">
+                {% for skill in item.skills %}
+                <div class="skill-row" style="--skill-level: {{ skill.proficiency }}%;">
+                    <div class="skill-node" aria-hidden="true"></div>
+                    <div class="skill-row-head"><span class="skill-name"><i class="{{ skill.resolved_icon_class }}"></i>{{ skill.name }}</span><strong>{{ skill.proficiency }}%</strong></div>
+                    <div class="skill-track" aria-label="{{ skill.name }} proficiency {{ skill.proficiency }} percent"><div class="skill-fill"></div></div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+    {% else %}<div class="empty-state"><i class="bi bi-stars"></i><h3>Add your skills from Admin</h3><p>Your technology cards and animated proficiency bars will appear here.</p></div>{% endif %}
+</div></section>
+
+<section class="pf-section"><div class="pf-container"><div class="learning-banner learning-banner--premium"><div class="learning-icon"><i class="bi bi-lightning-charge-fill"></i></div><div><span class="section-label">Keep learning</span><h2>Skills are a snapshot, not a finish line.</h2><p>{{ profile.currently_learning|default:"Add your current learning focus from the Profile section in Admin." }}</p></div><span class="learning-pulse" aria-hidden="true"></span></div></div></section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const rows = document.querySelectorAll('.skill-row');
+    if (!rows.length) return;
+    const reveal = (row) => {
+        row.classList.add('is-visible');
+        const fill = row.querySelector('.skill-fill');
+        const level = row.style.getPropertyValue('--skill-level');
+        if (fill && level) {
+            requestAnimationFrame(() => { fill.style.width = level; });
+        }
+    };
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { reveal(entry.target); obs.unobserve(entry.target); }
+            });
+        }, { threshold: 0.25 });
+        rows.forEach(row => observer.observe(row));
+    } else { rows.forEach(reveal); }
+});
+</script>
+{% endblock %}

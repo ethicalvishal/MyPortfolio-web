@@ -1,0 +1,41 @@
+{% extends "main/base.html" %}
+{% block title %}About — {{ profile.full_name }}{% endblock %}
+{% block content %}
+<section class="inner-hero inner-hero--compact"><div class="pf-container"><span class="section-label section-label--light">About me</span><h1>The person <span>behind the code.</span></h1><p>A fuller story covering my background, skills, education, experience, certifications and the direction I'm growing toward.</p></div></section>
+
+<section class="pf-section">
+    <div class="pf-container about-intro-grid about-intro-grid--premium">
+        <div class="about-photo-card">{% if profile.profile_image %}<img src="{{ profile.profile_image.url }}" alt="{{ profile.full_name }}">{% else %}<div class="about-photo-empty"><i class="bi bi-person"></i></div>{% endif %}<div class="about-photo-badge"><i class="bi bi-patch-check-fill"></i><span>{{ profile.availability_text|default:"Available for opportunities" }}</span></div></div>
+        <div class="about-main-copy"><span class="section-label">My story</span><h2>Hi, I'm {{ profile.full_name }}.</h2><div class="pf-prose">{{ profile.bio|linebreaks|default:"Add a detailed introduction from the Admin dashboard. You can write multiple paragraphs here." }}</div><div class="about-facts"><div><i class="bi bi-geo-alt"></i><span><small>Based in</small><strong>{{ profile.location|default:"India" }}</strong></span></div><div><i class="bi bi-envelope"></i><span><small>Email</small><strong>{{ profile.email|default:"Add from Admin" }}</strong></span></div><div><i class="bi bi-code-slash"></i><span><small>Role</small><strong>{{ profile.role_title }}</strong></span></div></div></div>
+    </div>
+    <div class="about-stat-strip">
+        <div><strong>{{ profile.years_experience|default:"0" }}+</strong><span>Years learning & building</span></div>
+        <div><strong>{{ profile.projects_completed|default:"0" }}+</strong><span>Projects completed</span></div>
+        <div><strong>{{ certifications|length }}</strong><span>Certifications</span></div>
+        <div><strong>{{ education|length }}</strong><span>Education records</span></div>
+    </div>
+</section>
+
+{% if services %}<section class="pf-section pf-section--soft"><div class="pf-container"><div class="section-heading-row"><div><span class="section-label">What I do</span><h2>What I can <span>work on.</span></h2><p class="section-subtext">These are the areas I enjoy working in. Everything below can be added, edited, reordered or hidden from Admin.</p></div></div><div class="service-grid service-grid--about">{% for service in services %}<article class="service-card service-card--premium"><div class="service-icon"><i class="{{ service.icon_class|default:'bi bi-code-slash' }}"></i></div><span class="service-no">0{{ forloop.counter }}</span><h3>{{ service.title }}</h3><p>{{ service.description }}</p></article>{% endfor %}</div></div></section>{% endif %}
+
+{% if experience or education %}<section class="pf-section"><div class="pf-container"><div class="section-heading-row"><div><span class="section-label">My journey</span><h2>From <span>education</span> to experience.</h2><p class="section-subtext">A single connected journey shows the foundation first, then the experience built on top of it. Add, edit or reorder every entry from Admin.</p></div></div>
+    <div class="journey-board">
+        <div class="journey-board-line" aria-hidden="true"></div>
+        <div class="journey-phase journey-phase--education">
+            <div class="journey-phase-head"><span class="journey-phase-icon"><i class="bi bi-mortarboard-fill"></i></span><div><small>Foundation</small><h3>Education</h3><p>Where the journey started.</p></div></div>
+            <div class="journey-items">{% for edu in education %}<article class="journey-card journey-card--education"><span class="journey-dot" aria-hidden="true"></span><span class="timeline-date">{{ edu.start_year }} — {{ edu.end_year|default:"Ongoing" }}</span><h3>{{ edu.degree }}</h3><strong>{{ edu.institution }}</strong>{% if edu.description %}<p>{{ edu.description }}</p>{% endif %}</article>{% empty %}<div class="journey-empty">Add education from Admin.</div>{% endfor %}</div>
+        </div>
+        <div class="journey-connector" aria-hidden="true"><span>Learning to building</span></div>
+        <div class="journey-phase journey-phase--experience">
+            <div class="journey-phase-head"><span class="journey-phase-icon"><i class="bi bi-briefcase-fill"></i></span><div><small>Growth</small><h3>Experience</h3><p>Where learning becomes real work.</p></div></div>
+            <div class="journey-items">{% for exp in experience %}<article class="journey-card journey-card--experience"><span class="journey-dot" aria-hidden="true"></span><span class="timeline-date">{{ exp.start_date }} — {{ exp.end_date|default:"Present" }}</span><h3>{{ exp.role }}</h3><strong>{{ exp.company }}</strong>{% if exp.description %}<p>{{ exp.description }}</p>{% endif %}</article>{% empty %}<div class="journey-empty">Add experience from Admin.</div>{% endfor %}</div>
+        </div>
+    </div>
+</div></section>{% endif %}
+
+{% if certifications %}<section class="pf-section pf-section--soft"><div class="pf-container"><div class="section-heading-row"><div><span class="section-label">Certifications</span><h2>Proof of <span>continuous learning.</span></h2><p class="section-subtext">Upload certificates, credential IDs and verification links from Admin so visitors can see the evidence behind the skills.</p></div></div><div class="cert-grid cert-grid--premium">{% for cert in certifications %}<article class="cert-card">{% if cert.certificate_image %}<img src="{{ cert.certificate_image.url }}" alt="{{ cert.name }} certificate">{% else %}<div class="cert-icon"><i class="bi bi-award-fill"></i></div>{% endif %}<span class="timeline-date">{{ cert.issue_date|default:"Certificate" }}</span><h3>{{ cert.name }}</h3><strong>{{ cert.issuer }}</strong>{% if cert.credential_id %}<span class="credential-id">ID: {{ cert.credential_id }}</span>{% endif %}{% if cert.description %}<p>{{ cert.description }}</p>{% endif %}{% if cert.credential_url %}<a href="{{ cert.credential_url }}" target="_blank" rel="noopener" class="text-link">Verify credential <i class="bi bi-box-arrow-up-right"></i></a>{% endif %}</article>{% endfor %}</div></div></section>{% endif %}
+
+{% if achievements %}<section class="pf-section"><div class="pf-container"><div class="section-heading-row"><div><span class="section-label">Highlights</span><h2>Milestones that <span>keep me moving.</span></h2></div></div><div class="achievement-grid achievement-grid--premium">{% for item in achievements %}<article class="achievement-card"><span>{{ item.year }}</span><i class="bi bi-stars"></i><h3>{{ item.title }}</h3><p>{{ item.description }}</p></article>{% endfor %}</div></div></section>{% endif %}
+
+<section class="pf-section about-next-section"><div class="pf-container"><div class="next-card next-card--premium"><div><span class="section-label">What's next</span><h2>Always learning. Always <span>building.</span></h2><p>{{ profile.currently_learning|default:"Use the Admin dashboard to add the technologies, topics or certifications you are currently learning." }}</p></div><a href="{% url 'contact' %}" class="pf-btn pf-btn--primary">Let's connect <i class="bi bi-arrow-up-right"></i></a></div></div></section>
+{% endblock %}
