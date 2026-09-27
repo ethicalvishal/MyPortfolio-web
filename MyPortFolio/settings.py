@@ -134,25 +134,6 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / 'main/static']
 
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
-
-# Uploaded content (profile photo, project thumbnails, blog covers, resume).
-# NOTE: on most free-tier hosts (Render, Railway, etc.) local disk storage is
-# wiped on every deploy/restart. For anything beyond local development, wire
-# this up to persistent storage (e.g. Cloudinary, S3) instead.
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
@@ -167,3 +148,16 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# Backward-compat: django-cloudinary-storage's collectstatic override still
+# reads the old STATICFILES_STORAGE attribute directly (Django 6 removed it),
+# so we set it manually here to avoid AttributeError during collectstatic.
+STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
+
+# Uploaded content (profile photo, project thumbnails, blog covers, resume).
+# NOTE: on most free-tier hosts (Render, Railway, etc.) local disk storage is
+# wiped on every deploy/restart. Now using Cloudinary for persistent storage.
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
