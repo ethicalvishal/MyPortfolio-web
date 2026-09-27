@@ -139,6 +139,8 @@ CLOUDINARY_STORAGE = {
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
     'RAW_FILE_EXTENSIONS': ['pdf', 'doc', 'docx', 'zip', 'txt'],
+    'OVERWRITE': True,
+    'UNIQUE_FILENAME': False,
 }
 
 STORAGES = {
