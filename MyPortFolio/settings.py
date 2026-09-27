@@ -149,6 +149,11 @@ STORAGES = {
     },
 }
 
+# Whitenoise's manifest storage is strict about every file referenced in CSS
+# actually existing after collectstatic. Some Django admin static files
+# (debug-only icons) aren't always present, so we relax this check.
+WHITENOISE_MANIFEST_STRICT = False
+
 # Backward-compat: django-cloudinary-storage's collectstatic override still
 # reads the old STATICFILES_STORAGE attribute directly (Django 6 removed it),
 # so we set it manually here to avoid AttributeError during collectstatic.
