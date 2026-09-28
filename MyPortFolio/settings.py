@@ -5,6 +5,7 @@ Django settings for MyPortFolio project.
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -87,7 +88,11 @@ WSGI_APPLICATION = 'MyPortFolio.wsgi.application'
 # DJANGO_DB_ENGINE=mysql (plus the other DJANGO_DB_* vars) to use MySQL
 # instead — nothing about this ever needs to be hardcoded in this file.
 
-if os.environ.get("DJANGO_DB_ENGINE") == "mysql":
+if os.environ.get("DATABASE_URL"):
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
+elif os.environ.get("DJANGO_DB_ENGINE") == "mysql":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
