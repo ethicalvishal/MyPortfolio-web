@@ -8,6 +8,8 @@ def seed_data(apps, schema_editor):
     Project = apps.get_model('main', 'Project')
     BlogPost = apps.get_model('main', 'BlogPost')
 
+    # NOTE: profile_image / resume_file / resume_preview_image are intentionally
+    # NOT set here. Upload them once from the admin panel (they go to Cloudinary).
     Profile.objects.get_or_create(pk=1, defaults=dict(
         full_name="Vishal Kumar",
         role_title="Python Full Stack Developer",
@@ -20,20 +22,38 @@ def seed_data(apps, schema_editor):
         email="vishalkumarmth091@gmail.com",
         phone="9709851977",
         location="India",
-        profile_image="images/Vishal.jpg",
-        resume_file="resume/Vishal_resume.pdf",
-        resume_preview_image="images/resume-preview.png",
         github_url="https://github.com/ethicalvishal",
         linkedin_url="https://www.linkedin.com/in/vishal-kumar-python/",
-        years_experience=1,
-        projects_completed=3,
+        instagram_url="https://www.instagram.com/vishal_singh9709/?hl=en",
+        twitter_url="https://x.com/RajputVishal097",
+        years_experience=0,
+        projects_completed=5,
     ))
 
-    Education.objects.get_or_create(
-        institution="BCA Program", degree="Bachelor of Computer Applications",
-        start_year="2023", end_year="", order=1,
-        description="Currently pursuing BCA alongside self-driven full stack projects.",
-    )
+    education_entries = [
+        dict(
+            institution="Laxmi Narayan Dubey College, Motihari",
+            degree="Bachelor of Computer Applications",
+            start_year="2022", end_year="2025", order=1,
+            description="Completed BCA alongside self-driven full stack projects.",
+        ),
+        dict(
+            institution="RPBD Inter College, Pipra",
+            degree="12th (Higher Secondary)",
+            start_year="2020", end_year="2022", order=2,
+            description="Completed higher secondary education with a strong interest in computers and technology.",
+        ),
+        dict(
+            institution="Zila School, Motihari",
+            degree="10th (Secondary)",
+            start_year="2018", end_year="2020", order=3,
+            description="Completed secondary education and built the foundation for my technical journey.",
+        ),
+    ]
+    for e in education_entries:
+        Education.objects.get_or_create(
+            degree=e["degree"], institution=e["institution"], defaults=e
+        )
 
     skills = [
         ("Python", "backend", 80, 1),
