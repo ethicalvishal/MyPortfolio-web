@@ -22,8 +22,7 @@
       <div class="about-photo-badge">
         <i class="bi bi-patch-check-fill"></i
         ><span
-          >{{ profile.availability_text|default:"Available for opportunities"
-          }}</span
+          >{{ profile.availability_text|default:"Available for opportunities"}}</span
         >
       </div>
     </div>
@@ -31,8 +30,7 @@
       <span class="section-label">My story</span>
       <h2>Hi, I'm {{ profile.full_name }}.</h2>
       <div class="pf-prose">
-        {{ profile.bio|linebreaks|default:"Add a detailed introduction from the
-        Admin dashboard. You can write multiple paragraphs here." }}
+        {{ profile.bio|linebreaks|default:"Add a detailed introduction from the Admin dashboard. You can write multiple paragraphs here." }}
       </div>
       <div class="about-facts">
         <div>
